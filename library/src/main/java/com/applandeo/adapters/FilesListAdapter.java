@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.applandeo.filepicker.R;
 import com.applandeo.listeners.OnRecyclerViewRowClick;
+import com.applandeo.utils.GlideCircleTransformation;
+import com.applandeo.viewmodels.FileRowViewModel;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,15 +22,15 @@ import java.util.List;
  */
 
 public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.ViewHolder> {
-    private List<File> mFilesList;
+    private List<FileRowViewModel> mFileRowViewModels;
     private OnRecyclerViewRowClick mOnRecyclerViewRowClick;
 
-    public FilesListAdapter(ArrayList<File> files) {
-        mFilesList = files;
+    public FilesListAdapter(ArrayList<FileRowViewModel> fileRowViewModels) {
+        mFileRowViewModels = fileRowViewModels;
     }
 
-    public void setFileList(List<File> fileList) {
-        mFilesList = fileList;
+    public void setFileList(List<FileRowViewModel> fileRowViewModels) {
+        mFileRowViewModels = fileRowViewModels;
         notifyDataSetChanged();
     }
 
@@ -40,7 +43,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.View
     }
 
     private File getFile(int position) {
-        return mFilesList.get(position);
+        return mFileRowViewModels.get(position).getFile();
     }
 
     @Override
@@ -70,19 +73,20 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        File file = mFilesList.get(position);
+        FileRowViewModel fileRowViewModel = mFileRowViewModels.get(position);
 
-        if (file.isDirectory()) {
-            holder.mFileIcon.setImageResource(R.drawable.folder);
-        } else {
-            holder.mFileIcon.setImageResource(R.drawable.noname);
-        }
+        Glide.with(holder.mFileIcon.getContext())
+                .load(fileRowViewModel.getFile())
+                .transform(new GlideCircleTransformation(holder.mFileIcon.getContext()))
+                .error(fileRowViewModel.getFileIconResource())
+                .placeholder(fileRowViewModel.getFileIconResource())
+                .into(holder.mFileIcon);
 
-        holder.mFileName.setText(file.getName());
+        holder.mFileName.setText(fileRowViewModel.getFile().getName());
     }
 
     @Override
     public int getItemCount() {
-        return mFilesList.size();
+        return mFileRowViewModels.size();
     }
 }

@@ -20,6 +20,15 @@
         android:layout_width="match_parent"
         android:layout_height="320dp" />
 
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Pusto tu"
+        android:textColor="#DE000000"
+        android:textSize="24sp"
+        android:visibility="gone" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

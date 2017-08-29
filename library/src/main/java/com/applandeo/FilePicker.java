@@ -15,6 +15,7 @@ import com.applandeo.adapters.FilesListAdapter;
 import com.applandeo.comparators.SortingOptions;
 import com.applandeo.filepicker.R;
 import com.applandeo.listeners.OnSelectFileListener;
+import com.applandeo.viewmodels.FileRowViewModel;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,7 +81,7 @@ public class FilePicker {
 
         RecyclerView fileList = view.findViewById(R.id.fileList);
 
-        FilesListAdapter adapter = new FilesListAdapter(openDir(mCurrentFile));
+        FilesListAdapter adapter = new FilesListAdapter(getDir(mCurrentFile));
 
         fileList.setLayoutManager(new LinearLayoutManager(mContext));
         fileList.setAdapter(adapter);
@@ -96,13 +97,13 @@ public class FilePicker {
             File parent = mCurrentFile.getParentFile();
 
             if (parent != null) {
-                adapter.setFileList(openDir(parent));
+                adapter.setFileList(getDir(parent));
             }
         });
 
         adapter.setOnRecycleViewRowClick(file -> {
             if (file.isDirectory()) {
-                adapter.setFileList(openDir(file));
+                adapter.setFileList(getDir(file));
                 return;
             }
 
@@ -120,15 +121,15 @@ public class FilePicker {
         alertdialog.show();
     }
 
-    private ArrayList<File> openDir(File directory) {
+    private ArrayList<FileRowViewModel> getDir(File directory) {
         mCurrentFile = directory;
 
-        ArrayList<File> list = new ArrayList<>();
+        ArrayList<FileRowViewModel> list = new ArrayList<>();
 
         File[] files = directory.listFiles();
 
         if (files != null) {
-            Stream.of(files).filter(File::exists).forEach(list::add);
+            Stream.of(files).filter(File::exists).forEach(file -> list.add(new FileRowViewModel(file)));
         }
 
         Collections.sort(list, SortingOptions.SortByNameAscendingFolderFirst);
