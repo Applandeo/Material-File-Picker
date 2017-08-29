@@ -1,5 +1,7 @@
 package com.applandeo.viewmodels;
 
+import android.databinding.BaseObservable;
+
 import com.applandeo.filepicker.R;
 
 import java.io.File;
@@ -8,7 +10,7 @@ import java.io.File;
  * Created by Mateusz Kornakiewicz on 29.08.2017.
  */
 
-public class FileRowViewModel {
+public class FileRowViewModel extends BaseObservable {
     private File mFile;
 
     public FileRowViewModel(File file) {

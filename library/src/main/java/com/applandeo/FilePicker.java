@@ -1,51 +1,28 @@
 package com.applandeo;
 
 import android.content.Context;
-import android.os.Environment;
+import android.databinding.DataBindingUtil;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 
-import com.annimon.stream.Stream;
-import com.applandeo.adapters.FilesListAdapter;
-import com.applandeo.comparators.SortingOptions;
+import com.applandeo.filepicker.BR;
 import com.applandeo.filepicker.R;
+import com.applandeo.filepicker.databinding.PickerDialogBinding;
 import com.applandeo.listeners.OnSelectFileListener;
-import com.applandeo.viewmodels.FileRowViewModel;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
+import com.applandeo.viewmodels.PickerDialogViewModel;
 
 /**
  * Created by Mateusz Kornakiewicz on 01.08.2017.
  */
 
 public class FilePicker {
-    private static final String DEFAULT_DIR
-            = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS;
 
     private final Context mContext;
-    private final OnSelectFileListener mOnSelectFileListener;
-    private File mCurrentFile;
+    private PickerDialogViewModel mPickerViewModel;
 
     private FilePicker(Context context, OnSelectFileListener onSelectFileListener, String path) {
         mContext = context;
-        mOnSelectFileListener = onSelectFileListener;
-
-        if (path == null) {
-            path = DEFAULT_DIR;
-        }
-
-        mCurrentFile = new File(path);
-
-        if (!mCurrentFile.exists()) {
-            mCurrentFile = new File(DEFAULT_DIR);
-        }
+        mPickerViewModel = new PickerDialogViewModel(path, onSelectFileListener);
     }
 
     public static class Builder {
@@ -73,68 +50,16 @@ public class FilePicker {
     }
 
     private void show() {
-        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        final View view = layoutInflater.inflate(R.layout.file_picker_dialog, null);
-
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle(mCurrentFile.getName());
-
-        RecyclerView fileList = view.findViewById(R.id.fileList);
-
-        FilesListAdapter adapter = new FilesListAdapter(getDir(mCurrentFile));
-
-        fileList.setLayoutManager(new LinearLayoutManager(mContext));
-        fileList.setAdapter(adapter);
-
-        Button cancelButton = view.findViewById(R.id.cancel_button);
-        Button selectButton = view.findViewById(R.id.select_button);
-
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(mContext);
         final AlertDialog alertdialog = alertBuilder.create();
-        alertdialog.setView(view);
+        mPickerViewModel.setAlertDialog(alertdialog);
 
-        toolbar.setNavigationOnClickListener(v -> {
-            File parent = mCurrentFile.getParentFile();
+        PickerDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
+                R.layout.picker_dialog, null, false);
+        binding.setVariable(BR.viewModel, mPickerViewModel);
 
-            if (parent != null) {
-                adapter.setFileList(getDir(parent));
-            }
-        });
-
-        adapter.setOnRecycleViewRowClick(file -> {
-            if (file.isDirectory()) {
-                adapter.setFileList(getDir(file));
-                return;
-            }
-
-            alertdialog.cancel();
-            mOnSelectFileListener.onSelect(file);
-        });
-
-        cancelButton.setOnClickListener(v -> alertdialog.cancel());
-
-        selectButton.setOnClickListener(v -> {
-            alertdialog.cancel();
-            mOnSelectFileListener.onSelect(mCurrentFile);
-        });
-
+        alertdialog.setView(binding.getRoot());
         alertdialog.show();
-    }
-
-    private ArrayList<FileRowViewModel> getDir(File directory) {
-        mCurrentFile = directory;
-
-        ArrayList<FileRowViewModel> list = new ArrayList<>();
-
-        File[] files = directory.listFiles();
-
-        if (files != null) {
-            Stream.of(files).filter(File::exists).forEach(file -> list.add(new FileRowViewModel(file)));
-        }
-
-        Collections.sort(list, SortingOptions.SortByNameAscendingFolderFirst);
-
-        return list;
     }
 }
 

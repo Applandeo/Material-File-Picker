@@ -1,5 +1,6 @@
 package com.applandeo.adapters;
 
+import android.databinding.ObservableList;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +15,17 @@ import com.applandeo.viewmodels.FileRowViewModel;
 import com.bumptech.glide.Glide;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Mateusz Kornakiewicz on 01.08.2017.
  */
 
-public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.ViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     private List<FileRowViewModel> mFileRowViewModels;
     private OnRecyclerViewRowClick mOnRecyclerViewRowClick;
 
-    public FilesListAdapter(ArrayList<FileRowViewModel> fileRowViewModels) {
+    public RecyclerAdapter(ObservableList<FileRowViewModel> fileRowViewModels) {
         mFileRowViewModels = fileRowViewModels;
     }
 
@@ -47,7 +47,7 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.View
     }
 
     @Override
-    public FilesListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.file_row, parent, false);
         return new ViewHolder(view, this);
     }
@@ -55,9 +55,9 @@ public class FilesListAdapter extends RecyclerView.Adapter<FilesListAdapter.View
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mFileName;
         private ImageView mFileIcon;
-        private FilesListAdapter mAdapter;
+        private RecyclerAdapter mAdapter;
 
-        public ViewHolder(View view, FilesListAdapter filesListAdapter) {
+        public ViewHolder(View view, RecyclerAdapter filesListAdapter) {
             super(view);
             mFileIcon = view.findViewById(R.id.fileIcon);
             mFileName = view.findViewById(R.id.fileName);
