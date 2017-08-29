@@ -27,21 +27,28 @@
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:title="@{viewModel.currentFile.name}" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/fileList"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="320dp"
-            app:setAdapter="@{viewModel.adapter}"
-            android:visibility="@{viewModel.fileList.isEmpty() ? View.GONE : View.VISIBLE}" />
+            android:layout_height="320dp">
 
-        <android.support.v7.widget.AppCompatTextView
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:gravity="center_horizontal"
-            android:text="@string/empty_folder"
-            android:textColor="#DE000000"
-            android:textSize="24sp"
-            android:visibility="@{viewModel.fileList.isEmpty() ? View.VISIBLE : View.GONE}" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fileList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:setAdapter="@{viewModel.adapter}" />
+
+            <android.support.v7.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:gravity="center_horizontal"
+                android:paddingTop="24dp"
+                android:text="@string/empty_folder"
+                android:textColor="#DE000000"
+                android:textSize="18sp"
+                android:visibility="@{viewModel.fileList.isEmpty() ? View.VISIBLE : View.GONE}" />
+
+        </RelativeLayout>
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

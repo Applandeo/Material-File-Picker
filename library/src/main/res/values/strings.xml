@@ -2,5 +2,5 @@
     <string name="app_name">File Picker</string>
     <string name="select_button">Select</string>
     <string name="cancel_button">Cancel</string>
-    <string name="empty_folder">Empty</string>
+    <string name="empty_folder">Empty directory</string>
 </resources>
