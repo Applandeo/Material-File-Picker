@@ -1,6 +1,7 @@
 package com.applandeo.viewmodels;
 
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import com.applandeo.filepicker.R;
 
@@ -13,14 +14,16 @@ import java.io.File;
 public class FileRowViewModel extends BaseObservable {
     private File mFile;
 
-    public FileRowViewModel(File file) {
+    FileRowViewModel(File file) {
         mFile = file;
     }
 
+    @Bindable
     public File getFile() {
         return mFile;
     }
 
+    @Bindable
     public int getFileIconResource() {
         if (mFile.isDirectory()) {
             return R.drawable.folder;

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.applandeo.viewmodels.PickerDialogViewModel" />
@@ -27,18 +29,19 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/fileList"
-            app:setAdapter="@{viewModel.adapter}"
             android:layout_width="match_parent"
-            android:layout_height="320dp" />
+            android:layout_height="320dp"
+            app:setAdapter="@{viewModel.adapter}"
+            android:visibility="@{viewModel.fileList.isEmpty() ? View.GONE : View.VISIBLE}" />
 
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Pusto tu"
+            android:layout_height="320dp"
+            android:gravity="center_horizontal"
+            android:text="@string/empty_folder"
             android:textColor="#DE000000"
             android:textSize="24sp"
-            android:visibility="gone" />
+            android:visibility="@{viewModel.fileList.isEmpty() ? View.VISIBLE : View.GONE}" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

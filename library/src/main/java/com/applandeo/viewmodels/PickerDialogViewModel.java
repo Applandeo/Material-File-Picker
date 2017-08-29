@@ -9,7 +9,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.annimon.stream.Stream;
-import com.applandeo.adapters.RecyclerAdapter;
+import com.applandeo.adapters.FileAdapter;
 import com.applandeo.comparators.SortingOptions;
 import com.applandeo.filepicker.BR;
 import com.applandeo.listeners.OnRecyclerViewRowClick;
@@ -31,7 +31,7 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private File mCurrentFile;
 
     private ObservableList<FileRowViewModel> mFilesList = new ObservableArrayList<>();
-    private RecyclerAdapter mAdapter = new RecyclerAdapter(mFilesList);
+    private FileAdapter mAdapter = new FileAdapter(mFilesList);
 
     public PickerDialogViewModel(String path, OnSelectFileListener onSelectFileListener) {
         mOnSelectFileListener = onSelectFileListener;
@@ -73,7 +73,12 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     }
 
     @Bindable
-    public RecyclerAdapter getAdapter() {
+    public ObservableList<FileRowViewModel> getFileList(){
+        return mFilesList;
+    }
+
+    @Bindable
+    public FileAdapter getAdapter() {
         return mAdapter;
     }
 
