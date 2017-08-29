@@ -12,11 +12,13 @@ import android.widget.Button;
 
 import com.annimon.stream.Stream;
 import com.applandeo.adapters.FilesListAdapter;
+import com.applandeo.comparators.SortingOptions;
 import com.applandeo.filepicker.R;
 import com.applandeo.listeners.OnSelectFileListener;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Mateusz Kornakiewicz on 01.08.2017.
@@ -28,7 +30,7 @@ public class FilePicker {
 
     private final Context mContext;
     private final OnSelectFileListener mOnSelectFileListener;
-    private File mFile;
+    private File mCurrentFile;
 
     private FilePicker(Context context, OnSelectFileListener onSelectFileListener, String path) {
         mContext = context;
@@ -38,10 +40,10 @@ public class FilePicker {
             path = DEFAULT_DIR;
         }
 
-        mFile = new File(path);
+        mCurrentFile = new File(path);
 
-        if (!mFile.exists()) {
-            mFile = new File(DEFAULT_DIR);
+        if (!mCurrentFile.exists()) {
+            mCurrentFile = new File(DEFAULT_DIR);
         }
     }
 
@@ -69,17 +71,19 @@ public class FilePicker {
         }
     }
 
-    public void show() {
+    private void show() {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         final View view = layoutInflater.inflate(R.layout.file_picker_dialog, null);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.setTitle(mFile.getName());
+        toolbar.setTitle(mCurrentFile.getName());
 
         RecyclerView fileList = view.findViewById(R.id.fileList);
 
+        FilesListAdapter adapter = new FilesListAdapter(openDir(mCurrentFile));
+
         fileList.setLayoutManager(new LinearLayoutManager(mContext));
-        fileList.setAdapter(new FilesListAdapter(openDir(mFile)));
+        fileList.setAdapter(adapter);
 
         Button cancelButton = view.findViewById(R.id.cancel_button);
         Button selectButton = view.findViewById(R.id.select_button);
@@ -88,19 +92,37 @@ public class FilePicker {
         final AlertDialog alertdialog = alertBuilder.create();
         alertdialog.setView(view);
 
-        toolbar.setNavigationOnClickListener(v -> alertdialog.cancel());
+        toolbar.setNavigationOnClickListener(v -> {
+            File parent = mCurrentFile.getParentFile();
+
+            if (parent != null) {
+                adapter.setFileList(openDir(parent));
+            }
+        });
+
+        adapter.setOnRecycleViewRowClick(file -> {
+            if (file.isDirectory()) {
+                adapter.setFileList(openDir(file));
+                return;
+            }
+
+            alertdialog.cancel();
+            mOnSelectFileListener.onSelect(file);
+        });
 
         cancelButton.setOnClickListener(v -> alertdialog.cancel());
 
         selectButton.setOnClickListener(v -> {
             alertdialog.cancel();
-            mOnSelectFileListener.onSelect(mFile);
+            mOnSelectFileListener.onSelect(mCurrentFile);
         });
 
         alertdialog.show();
     }
 
     private ArrayList<File> openDir(File directory) {
+        mCurrentFile = directory;
+
         ArrayList<File> list = new ArrayList<>();
 
         File[] files = directory.listFiles();
@@ -108,6 +130,8 @@ public class FilePicker {
         if (files != null) {
             Stream.of(files).filter(File::exists).forEach(list::add);
         }
+
+        Collections.sort(list, SortingOptions.SortByNameAscendingFolderFirst);
 
         return list;
     }

@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         openPicker.setOnClickListener(
                 view -> new FilePicker.Builder(this, listener)
+//                        .directory("/")
                         .show());
     }
 
