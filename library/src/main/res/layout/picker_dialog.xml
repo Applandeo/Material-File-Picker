@@ -6,6 +6,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.applandeo.filepicker.R"/>
+
         <import type="com.applandeo.utils.StringUtils" />
 
         <variable
@@ -23,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
             android:background="@color/colorPrimary"
-            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            app:navigationIcon="@{viewModel.parentDirectory.equals(viewModel.currentFile) ? R.drawable.ic_clear_white_24dp : R.drawable.ic_arrow_back_white_24dp}"
             app:navigationOnClickListener="@{viewModel.onToolbarIconClickListener}"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"

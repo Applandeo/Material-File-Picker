@@ -37,14 +37,25 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private final OnSelectFileListener mOnSelectFileListener;
     private AlertDialog mAlertDialog;
     private File mCurrentFile;
+    private File mMainDirectory = Environment.getExternalStorageDirectory();
+    private boolean mHideFiles;
 
     private ObservableList<FileRowViewModel> mFilesList = new ObservableArrayList<>();
     private FileAdapter mAdapter = new FileAdapter(mFilesList);
 
-    public PickerDialogViewModel(Context context, String path, OnSelectFileListener onSelectFileListener) {
+    public PickerDialogViewModel(Context context, String path, OnSelectFileListener onSelectFileListener, boolean hideFiles, String mainDirectory) {
         mContext = context;
         mOnSelectFileListener = onSelectFileListener;
         mAdapter.setOnRecycleViewRowClick(this);
+        mHideFiles = hideFiles;
+
+        if (mainDirectory != null) {
+            File mainDir = new File(mainDirectory);
+
+            if (mainDir.exists()) {
+                mMainDirectory = mainDir;
+            }
+        }
 
         if (path == null) {
             path = DEFAULT_DIR;
@@ -61,6 +72,11 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
 
     public final View.OnClickListener onToolbarIconClickListener = v -> {
         File parent = mCurrentFile.getParentFile();
+
+        if (mCurrentFile.equals(mMainDirectory)) {
+            mAlertDialog.cancel();
+            return;
+        }
 
         if (parent != null) {
             openDirectory(parent);
@@ -79,6 +95,11 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private void setCurrentFile(File currentFile) {
         mCurrentFile = currentFile;
         notifyPropertyChanged(BR.currentFile);
+    }
+
+    @Bindable
+    public File getParentDirectory() {
+        return mMainDirectory;
     }
 
     @Bindable
@@ -124,10 +145,15 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         File[] files = directory.listFiles();
 
         if (files != null) {
-            Stream.of(files)
+            List<File> filteredList = Stream.of(files)
                     .filter(File::exists)
-                    .filter(file -> !file.isHidden())
-                    .forEach(file -> list.add(new FileRowViewModel(mContext, file)));
+                    .filter(file -> !file.isHidden()).toList();
+
+            if (mHideFiles) {
+                filteredList = Stream.of(filteredList).filter(File::isDirectory).toList();
+            }
+
+            Stream.of(filteredList).forEach(file -> list.add(new FileRowViewModel(mContext, file)));
         }
 
         Collections.sort(list, SortingOptions.SortByNameAscendingFolderFirst);

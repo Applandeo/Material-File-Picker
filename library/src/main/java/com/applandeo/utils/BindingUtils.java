@@ -23,7 +23,7 @@ public class BindingUtils {
         toolbar.setNavigationOnClickListener(listener);
     }
 
-    @BindingAdapter({"app:setAdapter"})
+    @BindingAdapter("app:setAdapter")
     public static void setAdapter(RecyclerView recyclerView, FileAdapter adapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
         recyclerView.setVerticalScrollBarEnabled(true);

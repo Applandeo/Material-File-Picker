@@ -20,15 +20,17 @@ public class FilePicker {
     private final Context mContext;
     private PickerDialogViewModel mPickerViewModel;
 
-    private FilePicker(Context context, OnSelectFileListener onSelectFileListener, String path) {
+    private FilePicker(Context context, OnSelectFileListener onSelectFileListener, String path, boolean hideFiles, String mainDirectory) {
         mContext = context;
-        mPickerViewModel = new PickerDialogViewModel(context, path, onSelectFileListener);
+        mPickerViewModel = new PickerDialogViewModel(context, path, onSelectFileListener, hideFiles, mainDirectory);
     }
 
     public static class Builder {
         private Context mContext;
         private OnSelectFileListener mOnSelectFileListener;
         private String mPath;
+        private boolean mHideFiles;
+        private String mMainDirectory;
 
         public Builder(Context context, OnSelectFileListener listener) {
             mContext = context;
@@ -40,8 +42,18 @@ public class FilePicker {
             return this;
         }
 
+        public Builder hideFiles(boolean hideFiles) {
+            mHideFiles = hideFiles;
+            return this;
+        }
+
+        public Builder setMainDirectory(String mainDirectory) {
+            mMainDirectory = mainDirectory;
+            return this;
+        }
+
         FilePicker build() {
-            return new FilePicker(mContext, mOnSelectFileListener, mPath);
+            return new FilePicker(mContext, mOnSelectFileListener, mPath, mHideFiles, mMainDirectory);
         }
 
         public void show() {

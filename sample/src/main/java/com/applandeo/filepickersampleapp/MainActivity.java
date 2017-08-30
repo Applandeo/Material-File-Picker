@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
 
         openPicker.setOnClickListener(
                 view -> new FilePicker.Builder(this, listener)
+                        .setMainDirectory("/")
+                        .hideFiles(false) //to show only directories
 //                        .directory("/")
                         .show());
     }
