@@ -11,14 +11,14 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="@dimen/one_line_list_height"
         android:background="?attr/selectableItemBackground">
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginLeft="@dimen/margin"
+            android:layout_marginStart="@dimen/margin"
             app:file="@{rowViewModel.file}"
             app:iconResource="@{rowViewModel.fileIconResource}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -28,13 +28,15 @@
         <android.support.v7.widget.AppCompatTextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="72dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginEnd="@dimen/margin"
+            android:layout_marginLeft="@dimen/one_line_list_text_left_margin"
+            android:layout_marginRight="@dimen/margin"
+            android:layout_marginStart="@dimen/one_line_list_text_left_margin"
             android:ellipsize="middle"
-            android:maxLines="1"
+            android:singleLine="true"
             android:text="@{rowViewModel.file.name}"
-            android:textColor="#DE000000"
-            android:textSize="16sp"
+            android:textColor="@color/labelColor"
+            android:textSize="@dimen/font_body"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

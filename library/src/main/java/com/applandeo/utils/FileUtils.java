@@ -88,7 +88,7 @@ public class FileUtils {
             return PDF;
         }
 
-        if (mimeType.startsWith("audio")) {
+        if (mimeType.startsWith("audio") || uri.toString().toLowerCase().endsWith(".mp3") || uri.toString().toLowerCase().endsWith(".ogg")) {
             return MUSIC;
         }
 
