@@ -10,6 +10,18 @@ import com.applandeo.utils.FileUtils;
 
 import java.io.File;
 
+import static com.applandeo.utils.FileUtils.FileTypes.APK;
+import static com.applandeo.utils.FileUtils.FileTypes.ARCHIVE;
+import static com.applandeo.utils.FileUtils.FileTypes.BOOK;
+import static com.applandeo.utils.FileUtils.FileTypes.DOCUMENT;
+import static com.applandeo.utils.FileUtils.FileTypes.IMAGE;
+import static com.applandeo.utils.FileUtils.FileTypes.MUSIC;
+import static com.applandeo.utils.FileUtils.FileTypes.PDF;
+import static com.applandeo.utils.FileUtils.FileTypes.PRESENTATION;
+import static com.applandeo.utils.FileUtils.FileTypes.SHEET;
+import static com.applandeo.utils.FileUtils.FileTypes.TEXT;
+import static com.applandeo.utils.FileUtils.FileTypes.VIDEO;
+
 /**
  * Created by Mateusz Kornakiewicz on 29.08.2017.
  */
@@ -34,8 +46,42 @@ public class FileRowViewModel extends BaseObservable {
             return R.drawable.folder;
         }
 
-        System.out.println(mFile.getName() + " " + FileUtils.getMimeType(mContext, Uri.fromFile(mFile)));
+        switch (FileUtils.getType(mContext, Uri.fromFile(mFile))) {
+            case APK:
+                return R.drawable.apk;
 
-        return R.drawable.noname;
+            case ARCHIVE:
+                return R.drawable.archive;
+
+            case BOOK:
+                return R.drawable.book;
+
+            case DOCUMENT:
+                return R.drawable.doc;
+
+            case IMAGE:
+                return R.drawable.image;
+
+            case MUSIC:
+                return R.drawable.music;
+
+            case PDF:
+                return R.drawable.pdf;
+
+            case PRESENTATION:
+                return R.drawable.ppt;
+
+            case SHEET:
+                return R.drawable.xls;
+
+            case TEXT:
+                return R.drawable.text;
+
+            case VIDEO:
+                return R.drawable.video;
+
+            default:
+                return R.drawable.noname;
+        }
     }
 }

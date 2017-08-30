@@ -25,6 +25,7 @@ public class BindingUtils {
     @BindingAdapter({"app:setAdapter"})
     public static void setAdapter(RecyclerView recyclerView, FileAdapter adapter) {
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView.setVerticalScrollBarEnabled(true);
         recyclerView.setAdapter(adapter);
     }
 
