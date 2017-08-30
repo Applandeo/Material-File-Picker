@@ -3,4 +3,5 @@
     <string name="select_button">Select</string>
     <string name="cancel_button">Cancel</string>
     <string name="empty_folder">Empty directory</string>
+    <string name="root_directory">Root directory</string>
 </resources>

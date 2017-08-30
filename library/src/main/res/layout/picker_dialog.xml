@@ -6,6 +6,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.applandeo.utils.StringUtils" />
+
         <variable
             name="viewModel"
             type="com.applandeo.viewmodels.PickerDialogViewModel" />
@@ -25,7 +27,7 @@
             app:navigationOnClickListener="@{viewModel.onToolbarIconClickListener}"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:title="@{viewModel.currentFile.name}" />
+            app:title="@{!StringUtils.isNullOrEmpty(viewModel.currentFile.name) ? viewModel.currentFile.name : @string/root_directory}" />
 
         <RelativeLayout
             android:layout_width="match_parent"

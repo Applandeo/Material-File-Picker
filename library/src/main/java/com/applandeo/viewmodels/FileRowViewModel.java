@@ -1,9 +1,12 @@
 package com.applandeo.viewmodels;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.net.Uri;
 
 import com.applandeo.filepicker.R;
+import com.applandeo.utils.FileUtils;
 
 import java.io.File;
 
@@ -12,9 +15,11 @@ import java.io.File;
  */
 
 public class FileRowViewModel extends BaseObservable {
+    private Context mContext;
     private File mFile;
 
-    FileRowViewModel(File file) {
+    FileRowViewModel(Context context, File file) {
+        mContext = context;
         mFile = file;
     }
 
@@ -28,6 +33,8 @@ public class FileRowViewModel extends BaseObservable {
         if (mFile.isDirectory()) {
             return R.drawable.folder;
         }
+
+        System.out.println(mFile.getName() + " " + FileUtils.getMimeType(mContext, Uri.fromFile(mFile)));
 
         return R.drawable.noname;
     }

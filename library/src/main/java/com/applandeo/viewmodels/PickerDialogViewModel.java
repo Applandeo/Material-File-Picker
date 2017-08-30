@@ -1,5 +1,6 @@
 package com.applandeo.viewmodels;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
@@ -16,7 +17,13 @@ import com.applandeo.listeners.OnRecyclerViewRowClick;
 import com.applandeo.listeners.OnSelectFileListener;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Mateusz Kornakiewicz on 29.08.2017.
@@ -26,6 +33,7 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private static final String DEFAULT_DIR
             = Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS;
 
+    private Context mContext;
     private final OnSelectFileListener mOnSelectFileListener;
     private AlertDialog mAlertDialog;
     private File mCurrentFile;
@@ -33,7 +41,8 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private ObservableList<FileRowViewModel> mFilesList = new ObservableArrayList<>();
     private FileAdapter mAdapter = new FileAdapter(mFilesList);
 
-    public PickerDialogViewModel(String path, OnSelectFileListener onSelectFileListener) {
+    public PickerDialogViewModel(Context context, String path, OnSelectFileListener onSelectFileListener) {
+        mContext = context;
         mOnSelectFileListener = onSelectFileListener;
         mAdapter.setOnRecycleViewRowClick(this);
 
@@ -47,14 +56,14 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
             setCurrentFile(new File(DEFAULT_DIR));
         }
 
-        openDir(mCurrentFile);
+        openDirectory(mCurrentFile);
     }
 
     public final View.OnClickListener onToolbarIconClickListener = v -> {
         File parent = mCurrentFile.getParentFile();
 
         if (parent != null) {
-            openDir(parent);
+            openDirectory(parent);
         }
     };
 
@@ -73,7 +82,7 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     }
 
     @Bindable
-    public ObservableList<FileRowViewModel> getFileList(){
+    public ObservableList<FileRowViewModel> getFileList() {
         return mFilesList;
     }
 
@@ -91,23 +100,45 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         mOnSelectFileListener.onSelect(mCurrentFile);
     }
 
-    private void openDir(File directory) {
-        setCurrentFile(directory);
-        mFilesList.clear();
+    private void openDirectory(File directory) {
+        Single<List<FileRowViewModel>> filesList = Single.create(emitter -> {
+            try {
+                List<FileRowViewModel> list = getFiles(directory);
+                emitter.onSuccess(list);
+            } catch (Exception e) {
+                emitter.onError(e);
+            }
+        });
 
+        filesList.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(fileRowViewModels -> {
+                    setCurrentFile(directory);
+                    mFilesList.clear();
+                    mFilesList.addAll(fileRowViewModels);
+                });
+    }
+
+    private List<FileRowViewModel> getFiles(File directory) {
+        List<FileRowViewModel> list = new ArrayList<>();
         File[] files = directory.listFiles();
 
         if (files != null) {
-            Stream.of(files).filter(File::exists).forEach(file -> mFilesList.add(new FileRowViewModel(file)));
+            Stream.of(files)
+                    .filter(File::exists)
+                    .filter(file -> !file.isHidden())
+                    .forEach(file -> list.add(new FileRowViewModel(mContext, file)));
         }
 
-        Collections.sort(mFilesList, SortingOptions.SortByNameAscendingFolderFirst);
+        Collections.sort(list, SortingOptions.SortByNameAscendingFolderFirst);
+
+        return list;
     }
 
     @Override
     public void onClick(File file) {
         if (file.isDirectory()) {
-            openDir(file);
+            openDirectory(file);
             return;
         }
 

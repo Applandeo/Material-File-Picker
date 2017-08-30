@@ -22,7 +22,7 @@ public class FilePicker {
 
     private FilePicker(Context context, OnSelectFileListener onSelectFileListener, String path) {
         mContext = context;
-        mPickerViewModel = new PickerDialogViewModel(path, onSelectFileListener);
+        mPickerViewModel = new PickerDialogViewModel(context, path, onSelectFileListener);
     }
 
     public static class Builder {
