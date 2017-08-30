@@ -1,6 +1,7 @@
 package com.applandeo.utils;
 
 import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +31,7 @@ public class BindingUtils {
     }
 
     @BindingAdapter({"app:file", "app:iconResource"})
-    public static void loadFileIcon(ImageView imageView, File file, int placeholder) {
+    public static void loadFileIcon(ImageView imageView, File file, Drawable placeholder) {
         Glide.with(imageView.getContext())
                 .load(file)
                 .transform(new GlideCircleTransformation(imageView.getContext()))

@@ -3,10 +3,12 @@ package com.applandeo.viewmodels;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
 import com.applandeo.filepicker.R;
 import com.applandeo.utils.FileUtils;
+import com.applandeo.utils.ImageUtils;
 
 import java.io.File;
 
@@ -41,47 +43,47 @@ public class FileRowViewModel extends BaseObservable {
     }
 
     @Bindable
-    public int getFileIconResource() {
+    public Drawable getFileIconResource() {
         if (mFile.isDirectory()) {
-            return R.drawable.folder;
+            return ImageUtils.createIcon(mContext, R.drawable.folder, R.color.directory_icon_color);
         }
 
         switch (FileUtils.getType(mContext, Uri.fromFile(mFile))) {
             case APK:
-                return R.drawable.apk;
+                return ImageUtils.createIcon(mContext, R.drawable.apk, R.color.apk_icon_color);
 
             case ARCHIVE:
-                return R.drawable.archive;
+                return ImageUtils.createIcon(mContext, R.drawable.archive, R.color.archive_icon_color);
 
             case BOOK:
-                return R.drawable.book;
+                return ImageUtils.createIcon(mContext, R.drawable.book, R.color.book_icon_color);
 
             case DOCUMENT:
-                return R.drawable.doc;
+                return ImageUtils.createIcon(mContext, R.drawable.document, R.color.document_icon_color);
 
             case IMAGE:
-                return R.drawable.image;
+                return ImageUtils.createIcon(mContext, R.drawable.image, R.color.image_icon_color);
 
             case MUSIC:
-                return R.drawable.music;
+                return ImageUtils.createIcon(mContext, R.drawable.music, R.color.music_icon_color);
 
             case PDF:
-                return R.drawable.pdf;
+                return ImageUtils.createIcon(mContext, R.drawable.document, R.color.pdf_icon_color);
 
             case PRESENTATION:
-                return R.drawable.ppt;
+                return ImageUtils.createIcon(mContext, R.drawable.document, R.color.presentation_icon_color);
 
             case SHEET:
-                return R.drawable.xls;
+                return ImageUtils.createIcon(mContext, R.drawable.document, R.color.sheet_icon_color);
 
             case TEXT:
-                return R.drawable.text;
+                return ImageUtils.createIcon(mContext, R.drawable.document, R.color.text_icon_color);
 
             case VIDEO:
-                return R.drawable.video;
+                return ImageUtils.createIcon(mContext, R.drawable.movie, R.color.video_icon_color);
 
             default:
-                return R.drawable.noname;
+                return ImageUtils.createIcon(mContext, R.drawable.unknown, R.color.unknown_icon_color);
         }
     }
 }

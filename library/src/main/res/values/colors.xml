@@ -3,4 +3,18 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="directory_icon_color">#404040</color>
+    <color name="apk_icon_color">#8BC34A</color>
+    <color name="archive_icon_color">#795548</color>
+    <color name="book_icon_color">#2F5FAC</color>
+    <color name="document_icon_color">#4285F4</color>
+    <color name="image_icon_color">#00838F</color>
+    <color name="music_icon_color">#FF6F00</color>
+    <color name="pdf_icon_color">#B50707</color>
+    <color name="presentation_icon_color">#F9A825</color>
+    <color name="sheet_icon_color">#00964A</color>
+    <color name="text_icon_color">#808080</color>
+    <color name="video_icon_color">#C74141</color>
+    <color name="unknown_icon_color">#808080</color>
 </resources>
