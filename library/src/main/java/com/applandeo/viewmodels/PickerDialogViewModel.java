@@ -49,14 +49,6 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         mAdapter.setOnRecycleViewRowClick(this);
         mHideFiles = hideFiles;
 
-        if (mainDirectory != null) {
-            File mainDir = new File(mainDirectory);
-
-            if (mainDir.exists()) {
-                mMainDirectory = mainDir;
-            }
-        }
-
         if (path == null) {
             path = DEFAULT_DIR;
         }
@@ -68,6 +60,18 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         }
 
         openDirectory(mCurrentFile);
+
+        if (mainDirectory != null) {
+            if (path.length() < mainDirectory.length()) {
+                mMainDirectory = mCurrentFile;
+            } else {
+                File mainDir = new File(mainDirectory);
+
+                if (mainDir.exists()) {
+                    mMainDirectory = mainDir;
+                }
+            }
+        }
     }
 
     public final View.OnClickListener onToolbarIconClickListener = v -> {
