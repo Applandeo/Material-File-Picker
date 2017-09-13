@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.applandeo.filepicker.R"/>
+        <import type="com.applandeo.filepicker.R" />
 
         <import type="com.applandeo.utils.StringUtils" />
 
@@ -39,7 +39,9 @@
                 android:id="@+id/fileList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:setAdapter="@{viewModel.adapter}" />
+                app:onScrollListener="@{viewModel.scrollListener}"
+                app:setAdapter="@{viewModel.adapter}"
+                app:setPosition="@{viewModel.position}" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:layout_width="match_parent"

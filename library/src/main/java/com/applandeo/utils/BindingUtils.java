@@ -39,4 +39,16 @@ public class BindingUtils {
                 .placeholder(placeholder)
                 .into(imageView);
     }
+
+    @BindingAdapter("app:setPosition")
+    public static void setListPosition(RecyclerView recyclerView, int position) {
+        if (recyclerView.getLayoutManager() != null) {
+            ((LinearLayoutManager) recyclerView.getLayoutManager()).scrollToPositionWithOffset(position, 0);
+        }
+    }
+
+    @BindingAdapter("app:onScrollListener")
+    public static void addOnScrollListener(RecyclerView recyclerView, RecyclerView.OnScrollListener listener) {
+        recyclerView.addOnScrollListener(listener);
+    }
 }

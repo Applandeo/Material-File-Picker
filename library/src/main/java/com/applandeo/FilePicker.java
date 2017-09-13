@@ -1,7 +1,10 @@
 package com.applandeo;
 
-import android.content.Context;
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 
@@ -17,23 +20,23 @@ import com.applandeo.viewmodels.PickerDialogViewModel;
 
 public class FilePicker {
 
-    private final Context mContext;
+    private final Activity mActivity;
     private PickerDialogViewModel mPickerViewModel;
 
-    private FilePicker(Context context, OnSelectFileListener onSelectFileListener, String path, boolean hideFiles, String mainDirectory) {
-        mContext = context;
-        mPickerViewModel = new PickerDialogViewModel(context, path, onSelectFileListener, hideFiles, mainDirectory);
+    private FilePicker(Activity activity, OnSelectFileListener onSelectFileListener, String path, boolean hideFiles, String mainDirectory) {
+        mActivity = activity;
+        mPickerViewModel = new PickerDialogViewModel(activity, path, onSelectFileListener, hideFiles, mainDirectory);
     }
 
     public static class Builder {
-        private Context mContext;
+        private Activity mActivity;
         private OnSelectFileListener mOnSelectFileListener;
         private String mPath;
         private boolean mHideFiles;
         private String mMainDirectory;
 
-        public Builder(Context context, OnSelectFileListener listener) {
-            mContext = context;
+        public Builder(Activity activity, OnSelectFileListener listener) {
+            mActivity = activity;
             mOnSelectFileListener = listener;
         }
 
@@ -53,7 +56,7 @@ public class FilePicker {
         }
 
         FilePicker build() {
-            return new FilePicker(mContext, mOnSelectFileListener, mPath, mHideFiles, mMainDirectory);
+            return new FilePicker(mActivity, mOnSelectFileListener, mPath, mHideFiles, mMainDirectory);
         }
 
         public void show() {
@@ -62,11 +65,18 @@ public class FilePicker {
     }
 
     private void show() {
-        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(mContext);
+        if (ActivityCompat.checkSelfPermission(mActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 6);
+            return;
+        }
+
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(mActivity);
         final AlertDialog alertdialog = alertBuilder.create();
         mPickerViewModel.setAlertDialog(alertdialog);
 
-        PickerDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mContext),
+        PickerDialogBinding binding = DataBindingUtil.inflate(LayoutInflater.from(mActivity),
                 R.layout.picker_dialog, null, false);
         binding.setVariable(BR.viewModel, mPickerViewModel);
 
