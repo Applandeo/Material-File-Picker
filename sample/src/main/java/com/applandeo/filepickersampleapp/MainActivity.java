@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.applandeo.FilePicker;
 import com.applandeo.listeners.OnSelectFileListener;
 
+import static com.applandeo.utils.FileUtils.FileTypes.TEXT;
+
 public class MainActivity extends AppCompatActivity {
 
     private TextView mSelectedPath;
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         openPicker.setOnClickListener(
                 view -> new FilePicker.Builder(this, listener)
 //                        .setMainDirectory("/")
-//                        .fileType(VIDEO)
+                        .fileType(TEXT)
                         .hideFiles(false) //to show only directories
 //                        .directory("/")
                         .show());
