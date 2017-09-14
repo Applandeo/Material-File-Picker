@@ -2,6 +2,7 @@ package com.applandeo.filepickersampleapp;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -41,10 +42,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void openPicker() {
         new FilePicker.Builder(this, listener)
-//                        .setMainDirectory("/")
+                .setMainDirectory(Environment.getExternalStorageDirectory().getPath())
                 .fileType(TEXT)
-                .hideFiles(false) //to show only directories
-//                        .directory("/")
+                .hideFiles(false)
+                .directory(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS)
                 .show();
     }
 }
