@@ -1,6 +1,8 @@
 package com.applandeo.filepickersampleapp;
 
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,17 +21,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button openPicker = (Button) findViewById(R.id.openPicker);
+        Button openPickerButton = (Button) findViewById(R.id.openPicker);
         mSelectedPath = (TextView) findViewById(R.id.selectedPath);
 
-        openPicker.setOnClickListener(
-                view -> new FilePicker.Builder(this, listener)
-//                        .setMainDirectory("/")
-                        .fileType(TEXT)
-                        .hideFiles(false) //to show only directories
-//                        .directory("/")
-                        .show());
+        openPickerButton.setOnClickListener(view -> openPicker());
     }
 
     private OnSelectFileListener listener = file -> mSelectedPath.setText(file.getPath());
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                && requestCode == FilePicker.STORAGE_PERMISSIONS) {
+            openPicker();
+        }
+    }
+
+    private void openPicker() {
+        new FilePicker.Builder(this, listener)
+//                        .setMainDirectory("/")
+                .fileType(TEXT)
+                .hideFiles(false) //to show only directories
+//                        .directory("/")
+                .show();
+    }
 }

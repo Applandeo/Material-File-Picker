@@ -19,6 +19,7 @@ import com.applandeo.viewmodels.PickerDialogViewModel;
  */
 
 public class FilePicker {
+    public static final int STORAGE_PERMISSIONS = 6;
 
     private final Activity mActivity;
     private PickerDialogViewModel mPickerViewModel;
@@ -76,8 +77,8 @@ public class FilePicker {
     private void show() {
         if (ActivityCompat.checkSelfPermission(mActivity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                    mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 6);
+            ActivityCompat.requestPermissions(mActivity, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    STORAGE_PERMISSIONS);
             return;
         }
 

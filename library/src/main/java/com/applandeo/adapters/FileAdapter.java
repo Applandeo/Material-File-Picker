@@ -42,7 +42,6 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 
     @Override
     public FileAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.file_row, parent, false);
         ViewDataBinding binding = DataBindingUtil
                 .inflate(LayoutInflater.from(parent.getContext()), R.layout.file_row, parent, false);
         return new ViewHolder(binding, this);
