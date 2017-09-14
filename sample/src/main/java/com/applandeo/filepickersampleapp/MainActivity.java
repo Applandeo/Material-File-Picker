@@ -28,6 +28,20 @@ public class MainActivity extends AppCompatActivity {
         openPickerButton.setOnClickListener(view -> openPicker());
     }
 
+    private void openPicker() {
+        new FilePicker.Builder(this, listener)
+                //this method let you decide how far user can go up in directories tree
+                .setMainDirectory(Environment.getExternalStorageDirectory().getPath())
+                //this method let you choose what types of files user will see in the picker
+                .fileType(IMAGE)
+                //this method let you hide files, only directories will be visible for user
+                .hideFiles(false)
+                //this method let you decide which directory user will see after picker opening
+                .directory(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS)
+                .show();
+    }
+
+    //listener to handle getting file
     private OnSelectFileListener listener = file -> mSelectedPath.setText(file.getPath());
 
     @Override
@@ -35,17 +49,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                //using flag below you can check if user granted storage permissions for the picker
                 && requestCode == FilePicker.STORAGE_PERMISSIONS) {
             openPicker();
         }
-    }
-
-    private void openPicker() {
-        new FilePicker.Builder(this, listener)
-                .setMainDirectory(Environment.getExternalStorageDirectory().getPath())
-                .fileType(IMAGE)
-                .hideFiles(false)
-                .directory(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS)
-                .show();
     }
 }

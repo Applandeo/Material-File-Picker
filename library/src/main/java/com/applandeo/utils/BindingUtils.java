@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import java.io.File;
 
 /**
+ * Utilities class needed to use DataBinding with unsupported methods of widgets
+ * <p>
  * Created by Mateusz Kornakiewicz on 29.08.2017.
  */
 

@@ -12,6 +12,7 @@ import com.applandeo.filepicker.BR;
 import com.applandeo.filepicker.R;
 import com.applandeo.filepicker.databinding.PickerDialogBinding;
 import com.applandeo.listeners.OnSelectFileListener;
+import com.applandeo.utils.FileUtils;
 import com.applandeo.viewmodels.PickerDialogViewModel;
 
 /**
@@ -44,22 +45,44 @@ public class FilePicker {
             mOnSelectFileListener = listener;
         }
 
+        /**
+         * This method let you decide which directory user will see after picker opening
+         *
+         * @param directoryPath A desired directory path
+         */
         public Builder directory(String directoryPath) {
             mPath = directoryPath;
             return this;
         }
 
+        /**
+         * This method let you hide files, only directories will be visible for user
+         *
+         * @param hideFiles Set if files should be hidden or not
+         */
         public Builder hideFiles(boolean hideFiles) {
             mHideFiles = hideFiles;
             return this;
         }
 
+        /**
+         * This method let you decide how far user can go up in directories tree
+         *
+         * @param mainDirectory A main directory path
+         */
         public Builder setMainDirectory(String mainDirectory) {
             mMainDirectory = mainDirectory;
             return this;
         }
 
-        public Builder fileType(String type) {
+        /**
+         * This method let you choose what types of files user will see in the picker
+         *
+         * @param type A type of file. Use static variable from FileUtils.FileTypes interface.
+         *             You can use "APK", "ARCHIVE", "BOOK", "DOCUMENT", "IMAGE", "MUSIC", "PDF",
+         *             "PRESENTATION", "SHEET", "TEXT", "VIDEO"
+         */
+        public Builder fileType(@FileUtils.FileTypes String type) {
             mFilesType = type;
             return this;
         }
@@ -69,11 +92,17 @@ public class FilePicker {
                     mFilesType);
         }
 
+        /**
+         * This method is used to create and display file picker
+         */
         public void show() {
             build().show();
         }
     }
 
+    /**
+     * This method creates and display file picker dialog
+     */
     private void show() {
         if (ActivityCompat.checkSelfPermission(mActivity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

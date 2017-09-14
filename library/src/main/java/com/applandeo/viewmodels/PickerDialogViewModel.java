@@ -32,6 +32,8 @@ import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
 import static com.applandeo.utils.FileUtils.FileTypes.DIRECTORY;
 
 /**
+ * This class represents a view model of the file picker dialog
+ * <p>
  * Created by Mateusz Kornakiewicz on 29.08.2017.
  */
 
@@ -77,7 +79,7 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         openDirectory(file, 0);
     }
 
-    private void setMainDirectory(String path, String mainDirectory){
+    private void setMainDirectory(String path, String mainDirectory) {
         if (mainDirectory != null) {
             if (path.length() < mainDirectory.length()) {
                 mMainDirectory = mCurrentFile;
@@ -91,6 +93,9 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         }
     }
 
+    /**
+     * Listener to handle toolbar's navigation button click
+     */
     public final View.OnClickListener onToolbarIconClickListener = v -> {
         File parent = mCurrentFile.getParentFile();
 
@@ -159,6 +164,9 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         mOnSelectFileListener.onSelect(mCurrentFile);
     }
 
+    /**
+     * ScrollListener needed to get current list position
+     */
     public final RecyclerView.OnScrollListener scrollListener = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -170,6 +178,12 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         }
     };
 
+    /**
+     * Asynchronous method to getting files list
+     *
+     * @param directory An instance of parent File object
+     * @param position  Position of the files list
+     */
     private void openDirectory(File directory, int position) {
         Single<List<FileRowViewModel>> filesList = Single.create(emitter -> {
             try {
@@ -190,6 +204,12 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
                 });
     }
 
+    /**
+     * This method is used to getting files list
+     *
+     * @param directory An instance of parent File object
+     * @return A list of FileRowViewModels which contain an instance of File object
+     */
     private List<FileRowViewModel> getFiles(File directory) {
         List<FileRowViewModel> list = new ArrayList<>();
         File[] files = directory.listFiles();
@@ -217,6 +237,11 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
         return list;
     }
 
+    /**
+     * Listener to handle files list row click
+     *
+     * @param file Clicked file
+     */
     @Override
     public void onClick(File file) {
         if (file.isDirectory()) {

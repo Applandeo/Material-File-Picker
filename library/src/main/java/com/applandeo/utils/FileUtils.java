@@ -30,6 +30,9 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 public class FileUtils {
 
+    /**
+     * Static variables representing a types of files
+     */
     @StringDef({UNKNOWN, ARCHIVE, DOCUMENT, SHEET, PRESENTATION, IMAGE, VIDEO, PDF, MUSIC, TEXT,
             APK, BOOK, DIRECTORY})
     @Retention(SOURCE)
@@ -49,19 +52,27 @@ public class FileUtils {
         String DIRECTORY = "directory";
     }
 
-    public static String getType(Context context, Uri uri) {
-        File file = new File(uri.getPath());
+    /**
+     * This method returns a String representing a type of the file using static variable from
+     * the FileTypes interface
+     *
+     * @param context An application context needed to get content resolver and find type of the file
+     * @param fileUri Uri of the file needed to get the file type using ContentResolver
+     * @return A string representing type of file
+     */
+    public static String getType(Context context, Uri fileUri) {
+        File file = new File(fileUri.getPath());
 
         if (file.isDirectory()) {
             return DIRECTORY;
         }
 
         String mimeType;
-        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+        if (fileUri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
             ContentResolver cr = context.getContentResolver();
-            mimeType = cr.getType(uri);
+            mimeType = cr.getType(fileUri);
         } else {
-            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri.toString());
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(fileUri.toString());
             mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
         }
 

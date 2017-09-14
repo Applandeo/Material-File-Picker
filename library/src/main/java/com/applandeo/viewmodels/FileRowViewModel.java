@@ -25,6 +25,8 @@ import static com.applandeo.utils.FileUtils.FileTypes.TEXT;
 import static com.applandeo.utils.FileUtils.FileTypes.VIDEO;
 
 /**
+ * This class represents a view model of the file list row
+ *
  * Created by Mateusz Kornakiewicz on 29.08.2017.
  */
 
