@@ -23,9 +23,11 @@ public class FilePicker {
     private final Activity mActivity;
     private PickerDialogViewModel mPickerViewModel;
 
-    private FilePicker(Activity activity, OnSelectFileListener onSelectFileListener, String path, boolean hideFiles, String mainDirectory) {
+    private FilePicker(Activity activity, OnSelectFileListener onSelectFileListener, String path,
+                       boolean hideFiles, String mainDirectory, String filesType) {
         mActivity = activity;
-        mPickerViewModel = new PickerDialogViewModel(activity, path, onSelectFileListener, hideFiles, mainDirectory);
+        mPickerViewModel = new PickerDialogViewModel(activity, path, onSelectFileListener, hideFiles,
+                mainDirectory, filesType);
     }
 
     public static class Builder {
@@ -34,6 +36,7 @@ public class FilePicker {
         private String mPath;
         private boolean mHideFiles;
         private String mMainDirectory;
+        private String mFilesType;
 
         public Builder(Activity activity, OnSelectFileListener listener) {
             mActivity = activity;
@@ -55,8 +58,14 @@ public class FilePicker {
             return this;
         }
 
+        public Builder fileType(String type) {
+            mFilesType = type;
+            return this;
+        }
+
         FilePicker build() {
-            return new FilePicker(mActivity, mOnSelectFileListener, mPath, mHideFiles, mMainDirectory);
+            return new FilePicker(mActivity, mOnSelectFileListener, mPath, mHideFiles, mMainDirectory,
+                    mFilesType);
         }
 
         public void show() {

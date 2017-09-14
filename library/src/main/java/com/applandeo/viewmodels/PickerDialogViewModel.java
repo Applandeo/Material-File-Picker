@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.ObservableArrayList;
 import android.databinding.ObservableList;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import com.applandeo.comparators.SortingOptions;
 import com.applandeo.filepicker.BR;
 import com.applandeo.listeners.OnRecyclerViewRowClick;
 import com.applandeo.listeners.OnSelectFileListener;
+import com.applandeo.utils.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
+import static com.applandeo.utils.FileUtils.FileTypes.DIRECTORY;
 
 /**
  * Created by Mateusz Kornakiewicz on 29.08.2017.
@@ -43,6 +46,7 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private File mCurrentFile;
     private File mMainDirectory = Environment.getExternalStorageDirectory();
     private boolean mHideFiles;
+    private String mFilesType;
 
     private ObservableList<FileRowViewModel> mFilesList = new ObservableArrayList<>();
     private FileAdapter mAdapter = new FileAdapter(mFilesList);
@@ -51,11 +55,13 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
     private int mCurrentListPosition;
     private int mListPosition;
 
-    public PickerDialogViewModel(Activity activity, String path, OnSelectFileListener onSelectFileListener, boolean hideFiles, String mainDirectory) {
+    public PickerDialogViewModel(Activity activity, String path, OnSelectFileListener onSelectFileListener,
+                                 boolean hideFiles, String mainDirectory, String filesType) {
         mActivity = activity;
         mOnSelectFileListener = onSelectFileListener;
         mAdapter.setOnRecycleViewRowClick(this);
         mHideFiles = hideFiles;
+        mFilesType = filesType;
 
         if (path == null) {
             path = DEFAULT_DIR;
@@ -157,8 +163,6 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
             if (newState == SCROLL_STATE_IDLE) {
                 mCurrentListPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
                         .findFirstCompletelyVisibleItemPosition();
-
-                System.out.println(mCurrentListPosition);
             }
         }
     };
@@ -194,6 +198,12 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
 
             if (mHideFiles) {
                 filteredList = Stream.of(filteredList).filter(File::isDirectory).toList();
+            }
+
+            if (mFilesType != null) {
+                filteredList = Stream.of(filteredList)
+                        .filter(file -> (FileUtils.getType(mActivity, Uri.fromFile(file)).equals(mFilesType)
+                                || FileUtils.getType(mActivity, Uri.fromFile(file)).equals(DIRECTORY))).toList();
             }
 
             Stream.of(filteredList).forEach(file -> list.add(new FileRowViewModel(mActivity, file)));

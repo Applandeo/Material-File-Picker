@@ -6,11 +6,13 @@ import android.net.Uri;
 import android.support.annotation.StringDef;
 import android.webkit.MimeTypeMap;
 
+import java.io.File;
 import java.lang.annotation.Retention;
 
 import static com.applandeo.utils.FileUtils.FileTypes.APK;
 import static com.applandeo.utils.FileUtils.FileTypes.ARCHIVE;
 import static com.applandeo.utils.FileUtils.FileTypes.BOOK;
+import static com.applandeo.utils.FileUtils.FileTypes.DIRECTORY;
 import static com.applandeo.utils.FileUtils.FileTypes.DOCUMENT;
 import static com.applandeo.utils.FileUtils.FileTypes.IMAGE;
 import static com.applandeo.utils.FileUtils.FileTypes.MUSIC;
@@ -29,7 +31,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
 public class FileUtils {
 
     @StringDef({UNKNOWN, ARCHIVE, DOCUMENT, SHEET, PRESENTATION, IMAGE, VIDEO, PDF, MUSIC, TEXT,
-            APK, BOOK})
+            APK, BOOK, DIRECTORY})
     @Retention(SOURCE)
     public @interface FileTypes {
         String UNKNOWN = "unknown";
@@ -44,9 +46,16 @@ public class FileUtils {
         String TEXT = "text";
         String APK = "apk";
         String BOOK = "book";
+        String DIRECTORY = "directory";
     }
 
     public static String getType(Context context, Uri uri) {
+        File file = new File(uri.getPath());
+
+        if (file.isDirectory()) {
+            return DIRECTORY;
+        }
+
         String mimeType;
         if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
             ContentResolver cr = context.getContentResolver();
