@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.applandeo.FilePicker;
 import com.applandeo.listeners.OnSelectFileListener;
 
-import static com.applandeo.utils.FileUtils.FileTypes.TEXT;
+import static com.applandeo.utils.FileUtils.FileTypes.IMAGE;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private void openPicker() {
         new FilePicker.Builder(this, listener)
                 .setMainDirectory(Environment.getExternalStorageDirectory().getPath())
-                .fileType(TEXT)
+                .fileType(IMAGE)
                 .hideFiles(false)
                 .directory(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOWNLOADS)
                 .show();

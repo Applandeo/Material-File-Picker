@@ -22,7 +22,6 @@ import com.applandeo.utils.FileUtils;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -67,14 +66,18 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
             path = DEFAULT_DIR;
         }
 
-        setCurrentFile(new File(path));
+        File file = new File(path);
 
-        if (!mCurrentFile.exists()) {
-            setCurrentFile(new File(DEFAULT_DIR));
+        if (!file.exists()) {
+            file = new File(DEFAULT_DIR);
         }
 
-        openDirectory(mCurrentFile, 0);
+        setMainDirectory(path, mainDirectory);
 
+        openDirectory(file, 0);
+    }
+
+    private void setMainDirectory(String path, String mainDirectory){
         if (mainDirectory != null) {
             if (path.length() < mainDirectory.length()) {
                 mMainDirectory = mCurrentFile;
@@ -206,10 +209,10 @@ public class PickerDialogViewModel extends BaseObservable implements OnRecyclerV
                                 || FileUtils.getType(mActivity, Uri.fromFile(file)).equals(DIRECTORY))).toList();
             }
 
-            Stream.of(filteredList).forEach(file -> list.add(new FileRowViewModel(mActivity, file)));
+            Stream.of(filteredList)
+                    .sorted(SortingOptions.SortByNameAscendingFolderFirst)
+                    .forEach(file -> list.add(new FileRowViewModel(mActivity, file)));
         }
-
-        Collections.sort(list, SortingOptions.SortByNameAscendingFolderFirst);
 
         return list;
     }
