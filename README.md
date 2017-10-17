@@ -56,7 +56,7 @@ new FilePicker.Builder(this, listener)
 ### View only specific file types:
 ```java
 new FilePicker.Builder(this, listener)
-      .fileType(FileUtils.FileTypes.IMAGE)
+      .fileType(FileTypes.IMAGE)
       .show();
 ```
 
