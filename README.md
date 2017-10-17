@@ -66,7 +66,7 @@ Other file types: `APK`, `ARCHIVE`, `BOOK`, `DOCUMENT`, `IMAGE`, `MUSIC`, `SHEET
 This method let you decide which directory user will see after picker opening:
 ```java
 new FilePicker.Builder(this, listener)
-      .directory("/storage/sdcard/MyFiles)
+      .directory("/storage/sdcard/MyFiles")
       .show();
 ```
 If you don't set this parameter, picker automatically view Download directory.
