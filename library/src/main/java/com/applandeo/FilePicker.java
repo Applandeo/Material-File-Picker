@@ -12,7 +12,7 @@ import com.applandeo.filepicker.BR;
 import com.applandeo.filepicker.R;
 import com.applandeo.filepicker.databinding.PickerDialogBinding;
 import com.applandeo.listeners.OnSelectFileListener;
-import com.applandeo.utils.FileUtils;
+import com.applandeo.constants.FileType;
 import com.applandeo.viewmodels.PickerDialogViewModel;
 
 /**
@@ -70,7 +70,7 @@ public class FilePicker {
          *
          * @param mainDirectory A main directory path
          */
-        public Builder setMainDirectory(String mainDirectory) {
+        public Builder mainDirectory(String mainDirectory) {
             mMainDirectory = mainDirectory;
             return this;
         }
@@ -78,11 +78,11 @@ public class FilePicker {
         /**
          * This method let you choose what types of files user will see in the picker
          *
-         * @param type A type of file. Use static variable from FileUtils.FileTypes interface.
+         * @param type A type of file. Use static variable from FileUtils.FileType interface.
          *             You can use "APK", "ARCHIVE", "BOOK", "DOCUMENT", "IMAGE", "MUSIC", "PDF",
          *             "PRESENTATION", "SHEET", "TEXT", "VIDEO"
          */
-        public Builder fileType(@FileUtils.FileTypes String type) {
+        public Builder fileType(@FileType String type) {
             mFilesType = type;
             return this;
         }

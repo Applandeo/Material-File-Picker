@@ -10,8 +10,7 @@ import android.widget.TextView;
 
 import com.applandeo.FilePicker;
 import com.applandeo.listeners.OnSelectFileListener;
-
-import static com.applandeo.utils.FileUtils.FileTypes.IMAGE;
+import com.applandeo.constants.FileType;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void openPicker() {
         new FilePicker.Builder(this, listener)
-                //this method let you decide how far user can go up in directories tree
-                .setMainDirectory(Environment.getExternalStorageDirectory().getPath())
+                //this method let you decide how far user can go up in the directories tree
+                .mainDirectory(Environment.getExternalStorageDirectory().getPath())
                 //this method let you choose what types of files user will see in the picker
-                .fileType(IMAGE)
+                .fileType(FileType.IMAGE)
                 //this method let you hide files, only directories will be visible for user
                 .hideFiles(false)
                 //this method let you decide which directory user will see after picker opening

@@ -12,17 +12,17 @@ import com.applandeo.utils.ImageUtils;
 
 import java.io.File;
 
-import static com.applandeo.utils.FileUtils.FileTypes.APK;
-import static com.applandeo.utils.FileUtils.FileTypes.ARCHIVE;
-import static com.applandeo.utils.FileUtils.FileTypes.BOOK;
-import static com.applandeo.utils.FileUtils.FileTypes.DOCUMENT;
-import static com.applandeo.utils.FileUtils.FileTypes.IMAGE;
-import static com.applandeo.utils.FileUtils.FileTypes.MUSIC;
-import static com.applandeo.utils.FileUtils.FileTypes.PDF;
-import static com.applandeo.utils.FileUtils.FileTypes.PRESENTATION;
-import static com.applandeo.utils.FileUtils.FileTypes.SHEET;
-import static com.applandeo.utils.FileUtils.FileTypes.TEXT;
-import static com.applandeo.utils.FileUtils.FileTypes.VIDEO;
+import static com.applandeo.constants.FileType.APK;
+import static com.applandeo.constants.FileType.ARCHIVE;
+import static com.applandeo.constants.FileType.BOOK;
+import static com.applandeo.constants.FileType.DOCUMENT;
+import static com.applandeo.constants.FileType.IMAGE;
+import static com.applandeo.constants.FileType.MUSIC;
+import static com.applandeo.constants.FileType.PDF;
+import static com.applandeo.constants.FileType.PRESENTATION;
+import static com.applandeo.constants.FileType.SHEET;
+import static com.applandeo.constants.FileType.TEXT;
+import static com.applandeo.constants.FileType.VIDEO;
 
 /**
  * This class represents a view model of the file list row

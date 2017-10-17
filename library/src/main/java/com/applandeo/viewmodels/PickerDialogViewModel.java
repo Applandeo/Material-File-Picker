@@ -29,7 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static android.support.v7.widget.RecyclerView.SCROLL_STATE_IDLE;
-import static com.applandeo.utils.FileUtils.FileTypes.DIRECTORY;
+import static com.applandeo.constants.FileType.DIRECTORY;
 
 /**
  * This class represents a view model of the file picker dialog
