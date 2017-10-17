@@ -59,7 +59,8 @@ new FilePicker.Builder(this, listener)
 
 Other file types: ```APK```, ```ARCHIVE```, ```BOOK```, ```DOCUMENT```, ```IMAGE```, ```MUSIC```, ```SHEET```, ```PDF```, ```PRESENTATION```, ```TEXT``` and ```VIDEO```.
 
-### This method let you decide which directory user will see after picker opening:
+### Set default directory:
+This method let you decide which directory user will see after picker opening:
 ```java
 new FilePicker.Builder(this, listener)
       .directory("/storage/sdcard/MyFiles)
@@ -67,10 +68,11 @@ new FilePicker.Builder(this, listener)
 ```
 If you don't set this parameter, picker automatically view Download directory.
 
-### This method let you decide how far user can go up in the directories tree:
+### Set main directory:
+This method let you decide how far user can go up in the directories tree:
 ```java
 new FilePicker.Builder(this, listener)
-      .setMainDirectory(Environment.getExternalStorageDirectory().getPath())
+      .mainDirectory("/storage")
       .show();
 ```
 If you don't set this parameter, picker automatically set the main internal storage.
@@ -80,14 +82,13 @@ If you don't set this parameter, picker automatically set the main internal stor
 Use ```FilePicker.STORAGE_PERMISSIONS``` to check if user granted storage permissions for the picker:
 ```java
 @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
+public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                && requestCode == FilePicker.STORAGE_PERMISSIONS) {
-            ...
+            && requestCode == FilePicker.STORAGE_PERMISSIONS) {
+                ...
         }
-    }
+}
 ```
 
 You don't have to add permissions tag to your AndroidManifest.xml.
