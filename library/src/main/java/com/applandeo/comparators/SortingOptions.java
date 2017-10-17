@@ -15,19 +15,16 @@ public class SortingOptions {
      * This Comparator compare files using their names and types. Files are sorted ascending [A-Z],
      * directories are placed before files.
      */
-    public static Comparator<File> SortByNameAscendingFolderFirst = (file1, file2) -> {
-        if (file1.isDirectory()) {
-            if (file2.isDirectory()) {
-                return String.valueOf(file1.getName().toLowerCase()).compareTo(file2.getName().toLowerCase());
-            } else {
-                return -1;
-            }
+    public static Comparator<File> SortByNameAscendingFolderFirst = (firstFile, secondFile) -> {
+        if (firstFile.isDirectory()) {
+            return secondFile.isDirectory() ? compareFileNames(firstFile, secondFile) : -1;
         } else {
-            if (file2.isDirectory()) {
-                return 1;
-            } else {
-                return String.valueOf(file1.getName().toLowerCase()).compareTo(file2.getName().toLowerCase());
-            }
+            return secondFile.isDirectory() ? 1 : compareFileNames(firstFile, secondFile);
         }
     };
+
+    private static int compareFileNames(File firstFile, File secondFile) {
+        return String.valueOf(firstFile.getName().toLowerCase())
+                .compareTo(secondFile.getName().toLowerCase());
+    }
 }
