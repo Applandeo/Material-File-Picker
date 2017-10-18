@@ -34,6 +34,13 @@ dependencies {
 }
 ```
 
+Enable data binding in module's **build.gradle** file:
+```
+dataBinding {
+    enabled = true
+}
+```
+
 Add to your java code:
 ```java
 new FilePicker.Builder(this, new OnSelectFileListener() {
